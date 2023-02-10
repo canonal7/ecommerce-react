@@ -11,7 +11,7 @@ const useFileHandler = (initState) => {
 
     setImageFile({
       ...imageFile,
-      [name]: items
+      [name]: items,
     });
   };
 
@@ -26,7 +26,10 @@ const useFileHandler = (initState) => {
       alert('File type must be JPEG or PNG', 'error');
       setFileLoading(false);
     } else if (size > 0.5) {
-      alert('File size exceeded 500kb, consider optimizing your image', 'error');
+      alert(
+        'File size exceeded 500kb, consider optimizing your image',
+        'error'
+      );
       setFileLoading(false);
     } else if (type === 'multiple') {
       Array.from(event.target.files).forEach((file) => {
@@ -34,21 +37,27 @@ const useFileHandler = (initState) => {
         reader.addEventListener('load', (e) => {
           setImageFile((oldFiles) => ({
             ...oldFiles,
-            [name]: [...oldFiles[name], { file, url: e.target.result, id: uuidv4() }]
+            [name]: [
+              ...oldFiles[name],
+              { file, url: e.target.result, id: uuidv4() },
+            ],
           }));
         });
         reader.readAsDataURL(file);
       });
 
       setFileLoading(false);
-    } else { // type is single
+    } else {
+      // type is single
+      console.log('here');
       const reader = new FileReader();
 
       reader.addEventListener('load', (e) => {
         setImageFile({
           ...imageFile,
-          [name]: { file: img, url: e.target.result }
+          [name]: { file: img, url: e.target.result },
         });
+        console.log(imageFile);
         setFileLoading(false);
       });
       reader.readAsDataURL(img);
@@ -60,7 +69,7 @@ const useFileHandler = (initState) => {
     setImageFile,
     isFileLoading,
     onFileChange,
-    removeImage
+    removeImage,
   };
 };
 
